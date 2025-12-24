@@ -2,173 +2,130 @@
 
 > **Smart Money for Student Life**
 
-IvCash is a student-focused digital lending platform designed to solve short-term and semester-based financial challenges faced by students. Built with transparency, trust, and student welfare at its core.
+A Next.js full-stack application for student digital lending, hosted on Vercel.
+
+## 🚀 Live Demo
+
+- **App**: [https://ivcash.vercel.app](https://ivcash.vercel.app)
 
 ## 🌟 Features
 
 ### For Students
 - 📝 Easy registration and profile setup
 - 💰 Request loans up to 500,000 RWF
-- 📊 Build your trust score with on-time payments
-- 💳 Multiple payment methods (Mobile Money, Bank Transfer)
-- 📱 View loan history and repayment schedules
+- 📊 Build trust score with on-time payments
+- 💳 Track loan history and repayments
 
 ### For Administrators
 - 📈 Real-time dashboard with key metrics
 - ✅ Approve/Reject loan applications
 - 👥 Manage student profiles
 - 💵 Track disbursements and repayments
-- 📋 Full audit trail of transactions
 
-## 🏗️ Project Structure
+## 🛠️ Tech Stack
 
-```
-IvCash/
-├── backend/                 # NestJS API Server
-│   ├── src/
-│   │   ├── modules/
-│   │   │   ├── auth/       # Authentication & Authorization
-│   │   │   ├── users/      # User management
-│   │   │   ├── students/   # Student profiles
-│   │   │   ├── loans/      # Loan management
-│   │   │   ├── repayments/ # Payment processing
-│   │   │   ├── transactions/# Transaction audit
-│   │   │   └── admin/      # Admin operations
-│   │   └── common/         # Shared utilities
-│   └── Dockerfile
-│
-├── admin-dashboard/         # React Admin Panel
-│   ├── src/
-│   │   ├── components/     # Reusable components
-│   │   ├── pages/          # Page components
-│   │   ├── services/       # API services
-│   │   └── stores/         # State management
-│   └── Dockerfile
-│
-├── docker-compose.yml       # Production deployment
-└── docker-compose.dev.yml   # Development services
-```
+- **Framework**: Next.js 14 (App Router)
+- **Database**: PostgreSQL with Prisma ORM
+- **Auth**: NextAuth.js
+- **Styling**: TailwindCSS
+- **Deployment**: Vercel
 
-## 🚀 Quick Start
+## 📦 Getting Started
 
 ### Prerequisites
+- Node.js 18+
+- PostgreSQL database (free at [neon.tech](https://neon.tech) or [supabase.com](https://supabase.com))
 
-- Node.js 20+
-- Docker & Docker Compose
-- PostgreSQL 15+ (or use Docker)
-
-### Development Setup
+### Installation
 
 1. **Clone the repository**
-   ```bash
-   cd IvCash
-   ```
-
-2. **Start development databases**
-   ```bash
-   docker-compose -f docker-compose.dev.yml up -d
-   ```
-
-3. **Setup Backend**
-   ```bash
-   cd backend
-   cp .env.example .env
-   npm install
-   npm run start:dev
-   ```
-
-4. **Setup Admin Dashboard**
-   ```bash
-   cd admin-dashboard
-   npm install
-   npm run dev
-   ```
-
-5. **Access the applications**
-   - Backend API: http://localhost:3000
-   - API Documentation: http://localhost:3000/docs
-   - Admin Dashboard: http://localhost:5174
-   - pgAdmin: http://localhost:5050
-
-### Production Deployment
-
 ```bash
-docker-compose up -d --build
+git clone https://github.com/Abathanase002/IvCash.git
+cd IvCash
 ```
 
-## 📚 API Documentation
-
-Once the backend is running, visit http://localhost:3000/docs for the complete Swagger API documentation.
-
-### Key Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/v1/auth/register` | Register new user |
-| POST | `/api/v1/auth/login` | User login |
-| POST | `/api/v1/loans/request` | Request a loan |
-| GET | `/api/v1/loans/{id}` | Get loan details |
-| POST | `/api/v1/repayments/pay` | Make repayment |
-| GET | `/api/v1/students/score` | Get trust score |
-
-## 💰 Pricing & Fees
-
-| Fee Type | Amount |
-|----------|--------|
-| Platform Fee | 3-5% per loan |
-| Late Fee | 2% flat (after grace period) |
-| Grace Period | 7 days |
-
-**No hidden fees. No compound interest. Full transparency.**
-
-## 🔐 Security Features
-
-- 🔒 JWT-based authentication
-- 🛡️ Role-based access control (RBAC)
-- 🔑 Password hashing with bcrypt
-- 📝 Full audit trail
-- 🚫 Rate limiting protection
-
-## 🧪 Testing
-
+2. **Install dependencies**
 ```bash
-# Backend tests
-cd backend
-npm run test
-npm run test:e2e
-
-# Frontend tests
-cd admin-dashboard
-npm run test
+npm install
 ```
 
-## 📊 Database Schema
+3. **Set up environment variables**
+```bash
+cp .env.example .env
+```
+Edit `.env` with your database URL and secret:
+```env
+DATABASE_URL="postgresql://..."
+NEXTAUTH_SECRET="your-secret-key"
+NEXTAUTH_URL="http://localhost:3000"
+```
 
-### Core Tables
-- **users** - User accounts and authentication
-- **students** - Student profiles and trust scores
-- **loans** - Loan applications and status
-- **repayments** - Payment records
-- **transactions** - Complete audit trail
+4. **Initialize database**
+```bash
+npx prisma db push
+```
 
-## 🤝 Contributing
+5. **Run development server**
+```bash
+npm run dev
+```
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+6. **Open [http://localhost:3000](http://localhost:3000)**
 
-## 📜 License
+## 🚀 Deploy to Vercel
 
-This project is licensed under the MIT License.
+### One-Click Deploy
 
-## 👥 Team
+1. Go to [vercel.com](https://vercel.com)
+2. Click **"Add New"** → **"Project"**
+3. Import this repository
+4. Add environment variables:
+   - `DATABASE_URL` - Your PostgreSQL connection string
+   - `NEXTAUTH_SECRET` - A random secret key
+   - `NEXTAUTH_URL` - Your Vercel app URL (after first deploy)
+5. Click **Deploy**!
 
-**IvCash Product & Engineering Team**
+### Free PostgreSQL Options
+- [Neon](https://neon.tech) - 512MB free
+- [Supabase](https://supabase.com) - 500MB free
+- [Railway](https://railway.app) - $5 free credits
+
+## 📁 Project Structure
+
+```
+ivcash-nextjs/
+IvCash/
+├── src/
+│   ├── app/
+│   │   ├── api/           # API routes
+│   │   │   ├── auth/      # NextAuth endpoints
+│   │   │   ├── loans/     # Loan CRUD
+│   │   │   ├── students/  # Student profiles
+│   │   │   ├── repayments/# Payment processing
+│   │   │   └── admin/     # Dashboard stats
+│   │   ├── admin/         # Admin panel pages
+│   │   ├── student/       # Student portal pages
+│   │   ├── login/         # Login page
+│   │   └── register/      # Registration page
+│   ├── components/        # React components
+│   ├── lib/               # Utilities (Prisma, Auth)
+│   └── types/             # TypeScript types
+├── prisma/
+│   └── schema.prisma      # Database schema
+├── vercel.json            # Vercel config
+```
+
+## 💰 Business Logic
+
+- **Interest Rate**: 5% per loan
+- **Platform Fee**: 5% of principal
+- **Max Loan**: 500,000 RWF
+- **Trust Score**: Increases with successful repayments
+
+## 📄 License
+
+MIT License
 
 ---
 
-<p align="center">
-  <strong>🎓 IvCash - Building infrastructure for dignity, opportunity, and trust.</strong>
-</p>
+Built with ❤️ for Rwandan students

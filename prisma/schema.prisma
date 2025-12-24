@@ -1,0 +1,145 @@
+// Prisma schema for IvCash - Student Digital Lending Platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  student
+  admin
+  super_admin
+  investor
+}
+
+enum LoanStatus {
+  pending
+  approved
+  rejected
+  disbursed
+  repaying
+  completed
+  defaulted
+}
+
+enum TransactionType {
+  disbursement
+  repayment
+  fee
+  refund
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  firstName     String
+  lastName      String
+  phone         String?
+  role          UserRole  @default(student)
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  student       Student?
+  transactions  Transaction[]
+
+  @@map("users")
+}
+
+model Student {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  universityName    String
+  studentId         String
+  program           String
+  yearOfStudy       Int
+  expectedGraduation DateTime
+  
+  nationalId        String?
+  dateOfBirth       DateTime?
+  address           String?
+  
+  trustScore        Float    @default(50)
+  isEligible        Boolean  @default(true)
+  maxLoanAmount     Float    @default(100000)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  loans             Loan[]
+
+  @@map("students")
+}
+
+model Loan {
+  id              String     @id @default(cuid())
+  studentId       String
+  student         Student    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  
+  amount          Float
+  purpose         String
+  duration        Int        // in months
+  interestRate    Float      @default(5)
+  platformFee     Float      @default(5)
+  
+  totalRepayment  Float
+  monthlyPayment  Float
+  
+  status          LoanStatus @default(pending)
+  
+  requestedAt     DateTime   @default(now())
+  approvedAt      DateTime?
+  disbursedAt     DateTime?
+  dueDate         DateTime?
+  completedAt     DateTime?
+  
+  approvedBy      String?
+  rejectionReason String?
+  
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  repayments      Repayment[]
+  transactions    Transaction[]
+
+  @@map("loans")
+}
+
+model Repayment {
+  id            String   @id @default(cuid())
+  loanId        String
+  loan          Loan     @relation(fields: [loanId], references: [id], onDelete: Cascade)
+  
+  amount        Float
+  paymentMethod String
+  reference     String?
+  
+  paidAt        DateTime @default(now())
+  createdAt     DateTime @default(now())
+
+  @@map("repayments")
+}
+
+model Transaction {
+  id          String          @id @default(cuid())
+  loanId      String?
+  loan        Loan?           @relation(fields: [loanId], references: [id])
+  userId      String?
+  user        User?           @relation(fields: [userId], references: [id])
+  
+  type        TransactionType
+  amount      Float
+  description String
+  reference   String?
+  
+  createdAt   DateTime        @default(now())
+
+  @@map("transactions")
+}
