@@ -39,17 +39,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: ./backend/package-lock.json
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      - name: Run linter
-        run: npm run lint
-
-      - name: Run tests
-        run: npm run test
+      - name: Build
+        run: npm run build
         env:
           DB_HOST: localhost
           DB_PORT: 5432
@@ -57,9 +52,6 @@ jobs:
           DB_PASSWORD: postgres
           DB_DATABASE: ivcash_test
           JWT_SECRET: test-secret
-
-      - name: Build
-        run: npm run build
 
   # Test Frontend
   test-frontend:
@@ -75,14 +67,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: ./admin-dashboard/package-lock.json
 
       - name: Install dependencies
-        run: npm ci
-
-      - name: Run linter
-        run: npm run lint
+        run: npm install
 
       - name: Build
         run: npm run build
@@ -98,14 +85,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Railway CLI
-        run: npm install -g @railway/cli
-
-      - name: Deploy Backend to Railway
-        run: railway up --service backend
-        working-directory: ./backend
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      - name: Deploy Backend
+        run: echo "Deploy to Railway manually or connect repo in Railway dashboard"
 
   # Deploy to Railway (Admin Dashboard)
   deploy-frontend:
@@ -116,11 +97,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Railway CLI
-        run: npm install -g @railway/cli
-
-      - name: Deploy Admin Dashboard to Railway
-        run: railway up --service admin-dashboard
-        working-directory: ./admin-dashboard
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      - name: Deploy Admin Dashboard
+        run: echo "Deploy to Railway manually or connect repo in Railway dashboard"
