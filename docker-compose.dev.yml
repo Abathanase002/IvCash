@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: ivcash-postgres-dev
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ivcash
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - ivcash-network-dev
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: ivcash-redis-dev
+    ports:
+      - "6379:6379"
+    networks:
+      - ivcash-network-dev
+
+  # pgAdmin (Database management)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: ivcash-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@ivcash.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - ivcash-network-dev
+
+volumes:
+  postgres_data_dev:
+
+networks:
+  ivcash-network-dev:
+    driver: bridge
