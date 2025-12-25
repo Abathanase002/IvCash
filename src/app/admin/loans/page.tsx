@@ -123,8 +123,8 @@ export default function LoansPage() {
                       </td>
                       <td className="px-6 py-4">
                         <div>
-                          <p className="font-medium">{loan.amount.toLocaleString()} RWF</p>
-                          <p className="text-sm text-gray-500">Total: {loan.totalRepayment.toLocaleString()} RWF</p>
+                          <p className="font-medium">{loan.amount.toLocaleString()} GHC</p>
+                          <p className="text-sm text-gray-500">Total: {loan.totalRepayment.toLocaleString()} GHC</p>
                         </div>
                       </td>
                       <td className="px-6 py-4 max-w-[200px] truncate">{loan.purpose}</td>
@@ -202,3 +202,4 @@ export default function LoansPage() {
     </div>
   )
 }
+

@@ -77,7 +77,7 @@ export default function RepaymentsPage() {
                       {repayment.loan.student.user.firstName} {repayment.loan.student.user.lastName}
                     </td>
                     <td className="px-6 py-4 text-green-600 font-semibold">
-                      +{repayment.amount.toLocaleString()} RWF
+                      +{repayment.amount.toLocaleString()} GHC
                     </td>
                     <td className="px-6 py-4">
                       <span className="px-2 py-1 bg-gray-100 rounded-full text-sm">
@@ -97,3 +97,4 @@ export default function RepaymentsPage() {
     </div>
   )
 }
+

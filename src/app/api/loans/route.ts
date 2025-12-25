@@ -7,7 +7,7 @@ import prisma from '@/lib/prisma'
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
-    
+
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
@@ -16,12 +16,12 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status')
 
     let where: any = {}
-    
+
     // Students can only see their own loans
     if (session.user.role === 'student') {
       where.student = { userId: session.user.id }
     }
-    
+
     if (status) {
       where.status = status
     }
@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
-    
+
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
@@ -86,9 +86,26 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    const MIN_LOAN_AMOUNT = 100
+    const MAX_LOAN_AMOUNT = 5000
+
+    if (amount < MIN_LOAN_AMOUNT) {
+      return NextResponse.json(
+        { error: `Minimum loan amount is ${MIN_LOAN_AMOUNT} GHC` },
+        { status: 400 }
+      )
+    }
+
+    if (amount > MAX_LOAN_AMOUNT) {
+      return NextResponse.json(
+        { error: `Maximum loan amount is ${MAX_LOAN_AMOUNT} GHC` },
+        { status: 400 }
+      )
+    }
+
     if (amount > student.maxLoanAmount) {
       return NextResponse.json(
-        { error: `Maximum loan amount is ${student.maxLoanAmount} RWF` },
+        { error: `Your current loan limit is ${student.maxLoanAmount.toLocaleString()} GHC` },
         { status: 400 }
       )
     }
@@ -138,3 +155,4 @@ export async function POST(request: NextRequest) {
     )
   }
 }
+

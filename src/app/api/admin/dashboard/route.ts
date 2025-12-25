@@ -34,8 +34,14 @@ export async function GET() {
       }),
     ])
 
-    const totalDisbursed = loans.reduce((sum, l) => sum + l.amount, 0)
-    const totalExpectedRepayments = loans.reduce((sum, l) => sum + l.totalRepayment, 0)
+    const totalDisbursed = loans.reduce(
+      (sum: number, l: { amount: number; totalRepayment: number }) => sum + l.amount,
+      0
+    )
+    const totalExpectedRepayments = loans.reduce(
+      (sum: number, l: { amount: number; totalRepayment: number }) => sum + l.totalRepayment,
+      0
+    )
     const totalCollected = repayments._sum.amount || 0
     const platformRevenue = totalCollected * 0.05 // 5% platform fee
 
@@ -66,7 +72,18 @@ export async function GET() {
         platformRevenue,
         outstandingAmount: totalExpectedRepayments - totalCollected,
       },
-      recentLoans: recentLoans.map((loan) => ({
+      recentLoans: recentLoans.map((loan: {
+        id: number;
+        amount: number;
+        status: string;
+        createdAt: Date;
+        student: {
+          user: {
+            firstName: string;
+            lastName: string;
+          };
+        };
+      }) => ({
         id: loan.id,
         studentName: `${loan.student.user.firstName} ${loan.student.user.lastName}`,
         amount: loan.amount,
@@ -82,3 +99,4 @@ export async function GET() {
     )
   }
 }
+

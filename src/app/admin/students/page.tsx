@@ -111,12 +111,11 @@ export default function StudentsPage() {
                         <span className="font-medium">{student.trustScore.toFixed(0)}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-4">{student.maxLoanAmount.toLocaleString()} RWF</td>
+                    <td className="px-6 py-4">{student.maxLoanAmount.toLocaleString()} GHC</td>
                     <td className="px-6 py-4">{student.loans.length}</td>
                     <td className="px-6 py-4">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        student.isEligible ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                      }`}>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${student.isEligible ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                        }`}>
                         {student.isEligible ? 'Eligible' : 'Not Eligible'}
                       </span>
                     </td>
@@ -130,3 +129,4 @@ export default function StudentsPage() {
     </div>
   )
 }
+

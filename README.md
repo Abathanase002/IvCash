@@ -1,131 +1,90 @@
-# 🎓 IvCash - Student Digital Lending Platform
+# Ashesi Student Loans Platform
 
-> **Smart Money for Student Life**
+A modern student lending platform built for Ashesi University students.
 
-A Next.js full-stack application for student digital lending, hosted on Vercel.
+## Features
 
-## 🚀 Live Demo
+- 🎓 Student registration with Ashesi-specific fields (hostel, room number)
+- 💰 Loan application and management
+- 📊 Payment tracking with visual progress
+- 📅 Admin appointment scheduling
+- 👤 Profile photo upload
+- 🎨 Beautiful Ashesi-branded UI (Maroon & Gold)
 
-- **App**: [https://ivcash.vercel.app](https://ivcash.vercel.app)
+## Quick Deploy to Vercel (FREE)
 
-## 🌟 Features
+### Step 1: Create MongoDB Atlas Database (FREE)
 
-### For Students
-- 📝 Easy registration and profile setup
-- 💰 Request loans up to 500,000 RWF
-- 📊 Build trust score with on-time payments
-- 💳 Track loan history and repayments
+1. Go to [MongoDB Atlas](https://www.mongodb.com/atlas) and create a free account
+2. Click "Build a Database" → Select **M0 FREE** tier
+3. Choose a region and click "Create"
+4. Create a database user (remember the password!)
+5. In "Network Access" → "Add IP Address" → **"Allow Access from Anywhere"** (0.0.0.0/0)
+6. Click "Connect" → "Connect your application" → Copy the connection string
+7. Replace `<password>` in the string with your actual password
 
-### For Administrators
-- 📈 Real-time dashboard with key metrics
-- ✅ Approve/Reject loan applications
-- 👥 Manage student profiles
-- 💵 Track disbursements and repayments
-
-## 🛠️ Tech Stack
-
-- **Framework**: Next.js 14 (App Router)
-- **Database**: PostgreSQL with Prisma ORM
-- **Auth**: NextAuth.js
-- **Styling**: TailwindCSS
-- **Deployment**: Vercel
-
-## 📦 Getting Started
-
-### Prerequisites
-- Node.js 18+
-- PostgreSQL database (free at [neon.tech](https://neon.tech) or [supabase.com](https://supabase.com))
-
-### Installation
-
-1. **Clone the repository**
-```bash
-git clone https://github.com/Abathanase002/IvCash.git
-cd IvCash
+Your connection string should look like:
+```
+mongodb+srv://myuser:mypassword@cluster0.abc123.mongodb.net/ashesi_loans?retryWrites=true&w=majority
 ```
 
-2. **Install dependencies**
+### Step 2: Deploy to Vercel (FREE)
+
+1. Push this code to GitHub
+2. Go to [Vercel](https://vercel.com) and sign up with GitHub
+3. Click "New Project" → Import your repository
+4. Add these Environment Variables:
+   - `DATABASE_URL` = your MongoDB Atlas connection string
+   - `NEXTAUTH_URL` = `https://your-project-name.vercel.app`
+   - `NEXTAUTH_SECRET` = generate with `openssl rand -base64 32`
+5. Click "Deploy"
+
+### Step 3: Create Admin User
+
+After deployment, you'll need to create an admin user. Run this in MongoDB Atlas:
+
+```javascript
+// In MongoDB Atlas, go to "Browse Collections" → "ashesi_loans" → "User"
+// Or use the setAdmin.ts script after creating a regular account
+```
+
+## Local Development
+
 ```bash
+# Install dependencies
 npm install
-```
 
-3. **Set up environment variables**
-```bash
+# Set up environment variables
 cp .env.example .env
-```
-Edit `.env` with your database URL and secret:
-```env
-DATABASE_URL="postgresql://..."
-NEXTAUTH_SECRET="your-secret-key"
-NEXTAUTH_URL="http://localhost:3000"
-```
+# Edit .env with your MongoDB Atlas URL
 
-4. **Initialize database**
-```bash
+# Generate Prisma client
+npx prisma generate
+
+# Push database schema
 npx prisma db push
-```
 
-5. **Run development server**
-```bash
+# Run development server
 npm run dev
 ```
 
-6. **Open [http://localhost:3000](http://localhost:3000)**
+## Tech Stack
 
-## 🚀 Deploy to Vercel
+- Next.js 14
+- TypeScript
+- Prisma (MongoDB)
+- NextAuth.js
+- Tailwind CSS
+- Lucide Icons
 
-### One-Click Deploy
+## Environment Variables
 
-1. Go to [vercel.com](https://vercel.com)
-2. Click **"Add New"** → **"Project"**
-3. Import this repository
-4. Add environment variables:
-   - `DATABASE_URL` - Your PostgreSQL connection string
-   - `NEXTAUTH_SECRET` - A random secret key
-   - `NEXTAUTH_URL` - Your Vercel app URL (after first deploy)
-5. Click **Deploy**!
+| Variable | Description |
+|----------|-------------|
+| `DATABASE_URL` | MongoDB Atlas connection string |
+| `NEXTAUTH_URL` | Your app URL (e.g., https://your-app.vercel.app) |
+| `NEXTAUTH_SECRET` | Random secret for NextAuth |
 
-### Free PostgreSQL Options
-- [Neon](https://neon.tech) - 512MB free
-- [Supabase](https://supabase.com) - 500MB free
-- [Railway](https://railway.app) - $5 free credits
+## License
 
-## 📁 Project Structure
-
-```
-ivcash-nextjs/
-IvCash/
-├── src/
-│   ├── app/
-│   │   ├── api/           # API routes
-│   │   │   ├── auth/      # NextAuth endpoints
-│   │   │   ├── loans/     # Loan CRUD
-│   │   │   ├── students/  # Student profiles
-│   │   │   ├── repayments/# Payment processing
-│   │   │   └── admin/     # Dashboard stats
-│   │   ├── admin/         # Admin panel pages
-│   │   ├── student/       # Student portal pages
-│   │   ├── login/         # Login page
-│   │   └── register/      # Registration page
-│   ├── components/        # React components
-│   ├── lib/               # Utilities (Prisma, Auth)
-│   └── types/             # TypeScript types
-├── prisma/
-│   └── schema.prisma      # Database schema
-├── vercel.json            # Vercel config
-```
-
-## 💰 Business Logic
-
-- **Interest Rate**: 5% per loan
-- **Platform Fee**: 5% of principal
-- **Max Loan**: 500,000 RWF
-- **Trust Score**: Increases with successful repayments
-
-## 📄 License
-
-MIT License
-
----
-
-Built with ❤️ for Rwandan students
+MIT

@@ -1,3 +1,4 @@
+
 import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import prisma from '@/lib/prisma'
@@ -5,7 +6,21 @@ import prisma from '@/lib/prisma'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { email, password, firstName, lastName, phone, role = 'student' } = body
+    const {
+      email,
+      password,
+      firstName,
+      lastName,
+      phone,
+      role = 'student',
+      universityName = 'Ashesi University',
+      studentId,
+      program,
+      yearOfStudy,
+      expectedGraduation,
+      hostelName,
+      roomNumber,
+    } = body
 
     // Validate required fields
     if (!email || !password || !firstName || !lastName) {
@@ -42,6 +57,28 @@ export async function POST(request: NextRequest) {
       },
     })
 
+    // If student, create Student record
+    if (role === 'student') {
+      if (!studentId || !program || !yearOfStudy || !expectedGraduation) {
+        return NextResponse.json(
+          { error: 'Missing student information' },
+          { status: 400 }
+        )
+      }
+      await prisma.student.create({
+        data: {
+          userId: user.id,
+          universityName,
+          studentId,
+          program,
+          yearOfStudy: parseInt(yearOfStudy, 10),
+          expectedGraduation: new Date(expectedGraduation),
+          hostelName: hostelName || null,
+          roomNumber: roomNumber || null,
+        },
+      })
+    }
+
     return NextResponse.json({
       id: user.id,
       email: user.email,
@@ -57,3 +94,4 @@ export async function POST(request: NextRequest) {
     )
   }
 }
+

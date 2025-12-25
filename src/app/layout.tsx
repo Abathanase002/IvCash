@@ -6,8 +6,8 @@ import { Providers } from '@/components/Providers'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'IvCash - Student Digital Lending Platform',
-  description: 'Smart Money for Student Life',
+  title: 'Ashesi Student Loans - Smart Financial Support',
+  description: 'Ashesi University Student Lending Platform - Empowering Students for Success',
 }
 
 export default function RootLayout({
@@ -23,3 +23,4 @@ export default function RootLayout({
     </html>
   )
 }
+
